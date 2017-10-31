@@ -1,11 +1,16 @@
 package com.cr.gankio
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import com.cr.library.activity.BaseActivity
 
-class MainActivity : AppCompatActivity() {
+/**
+ *
+ * @author RUI CAI
+ * @date 2017/10/22
+ */
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
