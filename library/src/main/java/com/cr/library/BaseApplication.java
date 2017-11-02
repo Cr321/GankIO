@@ -5,7 +5,9 @@ import android.app.Application;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
- * Created by RUI CAI on 2017/10/30.
+ *
+ * @author RUI CAI
+ * @date 2017/10/30
  */
 
 public class BaseApplication extends Application {
@@ -19,5 +21,6 @@ public class BaseApplication extends Application {
             return;
         }
         LeakCanary.install(this);
+        IMMLeaks.fixFocusedViewLeak(this);
     }
 }
