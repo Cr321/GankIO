@@ -35,11 +35,11 @@ class MainActivity : BaseActivity() {
 
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
+            R.id.navigation_discovery -> {
 
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_notifications -> {
+            R.id.navigation_favorites -> {
 
                 return@OnNavigationItemSelectedListener true
             }
