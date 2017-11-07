@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.cr.gankio.data.GankRepository
 import kotlinx.android.synthetic.main.fragment_news_list_layout.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -33,7 +34,7 @@ class GankNewsFragment : Fragment() {
     }
 
     fun getGanksNewsList() = doAsync {
-        val news = DataLoader().getGankNewsList("data/all/20/2")
+        val news = GankRepository.getGanksNewsList().execute().body()!!.results
         uiThread {
             recyclerView.adapter = GankNewsAdapter(news) {
                 val intent = Intent()
