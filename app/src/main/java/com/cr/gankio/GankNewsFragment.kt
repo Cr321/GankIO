@@ -1,5 +1,6 @@
 package com.cr.gankio
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.cr.gankio.data.GankNewsListViewModel
 import com.cr.gankio.data.GankRepository
 import kotlinx.android.synthetic.main.fragment_news_list_layout.*
 import org.jetbrains.anko.doAsync
@@ -17,6 +19,8 @@ import org.jetbrains.anko.uiThread
  *
  */
 class GankNewsFragment : Fragment() {
+    var mViewModel : GankNewsListViewModel? = null
+
     companion object {
         fun newInstance() : GankNewsFragment {
             return GankNewsFragment()
@@ -30,6 +34,7 @@ class GankNewsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        mViewModel = ViewModelProviders.of(this).get(GankNewsListViewModel::class.java)
         getGanksNewsList()
     }
 

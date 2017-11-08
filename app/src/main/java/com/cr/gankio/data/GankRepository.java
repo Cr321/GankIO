@@ -10,7 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class GankRepository {
-
+    private static final Object LOCK = new Object();
+    private static GankRepository sInstance;
     private static final String baseurl = "http://gank.io/api/";
 
     public static Call<GankNewsList> getGanksNewsList() {
