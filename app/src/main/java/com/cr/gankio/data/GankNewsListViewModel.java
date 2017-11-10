@@ -5,18 +5,20 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * @author RUI CAI
  * @date 2017/11/8
  */
 
 public class GankNewsListViewModel extends ViewModel {
-    private final GankRepository mRepository;
-    private final LiveData<List<GankNews>> mGankNews;
+    private GankRepository mRepository;
+    private LiveData<List<GankNews>> mGankNews;
 
     public GankNewsListViewModel(GankRepository repository) {
         mRepository = repository;
-        mGankNews = null;
+        mGankNews = repository.getGanksNewsList();
     }
 
     public LiveData<List<GankNews>> getGankNewsList() {
