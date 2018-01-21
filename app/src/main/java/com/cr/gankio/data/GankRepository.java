@@ -3,6 +3,8 @@ package com.cr.gankio.data;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.cr.gankio.data.network.GankNewsNetworkDataSource;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,27 +21,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @date 2017/11/7
  */
 public class GankRepository {
-    private static final String baseurl = "http://gank.io/api/";
+    private static final Object LOCK = new Object();
+    private static GankRepository mInstance;
+    private final GankNewsNetworkDataSource mGankNewsNetworkDataSource;
 
-    public LiveData<List<GankNews>> getGanksNewsList() {
-        final MutableLiveData<List<GankNews>> data = new MutableLiveData<>();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseurl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        GankIOService gankIOService = retrofit.create(GankIOService.class);
-        Call<GankNewsList> call = gankIOService.getGankNewsList("all", 20, 1);
-        call.enqueue(new Callback<GankNewsList>() {
-            @Override
-            public void onResponse(Call<GankNewsList> call, Response<GankNewsList> response) {
-                data.setValue(response.body().getResults());
+    private GankRepository(GankNewsNetworkDataSource gankNewsNetworkDataSource) {
+        mGankNewsNetworkDataSource = gankNewsNetworkDataSource;
+    }
+
+    public synchronized static GankRepository getInstance(GankNewsNetworkDataSource gankNewsNetworkDataSource) {
+        if (mInstance == null) {
+            synchronized (LOCK) {
+                mInstance = new GankRepository(gankNewsNetworkDataSource);
             }
+        }
+        return mInstance;
+    }
 
-            @Override
-            public void onFailure(Call<GankNewsList> call, Throwable t) {
-
-            }
-        });
-        return data;
+    public LiveData<List<GankNews>> getGanksNewsList(String type, int num, int page) {
+        return mGankNewsNetworkDataSource.getGanksNewsList(type, num, page);
     }
 }

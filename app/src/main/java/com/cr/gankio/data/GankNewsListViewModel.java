@@ -14,14 +14,12 @@ import javax.inject.Inject;
 
 public class GankNewsListViewModel extends ViewModel {
     private GankRepository mRepository;
-    private LiveData<List<GankNews>> mGankNews;
 
     public GankNewsListViewModel(GankRepository repository) {
         mRepository = repository;
-        mGankNews = repository.getGanksNewsList();
     }
 
-    public LiveData<List<GankNews>> getGankNewsList() {
-        return mGankNews;
+    public LiveData<List<GankNews>> getGankNewsList(String type, int num, int page) {
+        return mRepository.getGanksNewsList(type, num, page);
     }
 }
