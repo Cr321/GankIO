@@ -13,10 +13,14 @@ import javax.inject.Inject;
  */
 
 public class GankNewsListViewModel extends ViewModel {
-    private GankRepository mRepository;
+    private final GankRepository mRepository;
+    private final String mType;
+    private int page;
 
-    public GankNewsListViewModel(GankRepository repository) {
+    public GankNewsListViewModel(GankRepository repository, String type) {
         mRepository = repository;
+        mType = type;
+        page = 1;
     }
 
     public LiveData<List<GankNews>> getGankNewsList(String type, int num, int page) {

@@ -1,12 +1,12 @@
-package com.cr.gankio;
+package com.cr.gankio.ui.fragments;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.cr.gankio.R;
 import com.cr.gankio.data.GankNews;
 
 import java.util.List;

@@ -41,7 +41,7 @@ public class GankNewsNetworkDataSource {
 		gankIOService = retrofit.create(GankIOService.class);
 	}
 
-	public static GankNewsNetworkDataSource getInstance() {
+	public synchronized static GankNewsNetworkDataSource getInstance() {
 		if (mInstance == null) {
 			synchronized (LOCK) {
 				mInstance = new GankNewsNetworkDataSource();

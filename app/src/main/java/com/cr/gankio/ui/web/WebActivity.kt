@@ -1,7 +1,8 @@
-package com.cr.gankio
+package com.cr.gankio.ui.web
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.cr.gankio.R
 import kotlinx.android.synthetic.main.activity_web_layout.*
 
 /**

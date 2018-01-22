@@ -1,4 +1,4 @@
-package com.cr.gankio;
+package com.cr.gankio.ui.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -12,12 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cr.gankio.R;
 import com.cr.gankio.data.GankIOService;
 import com.cr.gankio.data.GankNewsListViewModel;
 import com.cr.gankio.data.GankRepository;
 import com.cr.gankio.data.network.GankNewsNetworkDataSource;
-
-import javax.inject.Inject;
+import com.cr.gankio.ui.web.WebActivity;
 
 /**
  * @author RUI CAI
@@ -28,23 +28,41 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private GankNewsListViewModel mViewModel;
+    private View rootView;
 
-    public static GankNewsFragment newInstance() {
-        return new GankNewsFragment();
+    private static final String ARG_TYPE = "type";
+    private String mType;
+
+    public static GankNewsFragment newInstance(String type) {
+        GankNewsFragment fragment = new GankNewsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_TYPE, type);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mType = getArguments().getString(ARG_TYPE);
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_news_list_layout, container, false);
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_news_list_layout, container, false);
+            initView(rootView);
+        }
+        return rootView;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mRecyclerView = getActivity().findViewById(R.id.recyclerView);
+    private void initView(View rootView) {
+        mRecyclerView = rootView.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mSwipeRefreshLayout = getActivity().findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -52,15 +70,21 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
             }
         });
         GankNewsNetworkDataSource gankNewsNetworkDataSource = GankNewsNetworkDataSource.getInstance();
-        GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository.getInstance(gankNewsNetworkDataSource));
+        GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository.getInstance(gankNewsNetworkDataSource), mType);
         mViewModel = ViewModelProviders.of(this,factory).get(GankNewsListViewModel.class);
-        mViewModel.getGankNewsList(GankIOService.TYPE_ALL, 20, 1).observe(this, mGankNews-> {
+        mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews-> {
             GankNewsAdapter mAdapter = new GankNewsAdapter(mGankNews,this::onClick);
             mRecyclerView.setAdapter(mAdapter);
             if (mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     @Override
@@ -72,6 +96,6 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
 
     private void refresh() {
         //Todo Will modify lately
-        mViewModel.getGankNewsList(GankIOService.TYPE_APP, 20, 1);
+        mViewModel.getGankNewsList(mType, 20, 1);
     }
 }
