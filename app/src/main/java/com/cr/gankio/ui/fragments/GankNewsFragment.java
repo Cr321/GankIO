@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cr.gankio.Constants;
 import com.cr.gankio.R;
 import com.cr.gankio.data.GankIOService;
 import com.cr.gankio.data.GankNewsListViewModel;
@@ -61,7 +63,11 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
 
     private void initView(View rootView) {
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        if (!Constants.TYPE_WELFARE.equals(mType)) {
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        } else {
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        }
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -73,7 +79,10 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
         GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository.getInstance(gankNewsNetworkDataSource), mType);
         mViewModel = ViewModelProviders.of(this,factory).get(GankNewsListViewModel.class);
         mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews-> {
-            GankNewsAdapter mAdapter = new GankNewsAdapter(mGankNews,this::onClick);
+            GankNewsAdapter mAdapter = new GankNewsAdapter(this, mGankNews,this::onClick);
+            if (Constants.TYPE_WELFARE.equals(mType)) {
+                mAdapter.setshowImage(true);
+            }
             mRecyclerView.setAdapter(mAdapter);
             if (mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
