@@ -41,4 +41,8 @@ public class GankRepository {
     public LiveData<List<GankNews>> getGanksNewsList(String type, int num, int page) {
         return mGankNewsNetworkDataSource.getGanksNewsList(type, num, page);
     }
+
+    public LiveData<List<GankNews>> loadMore(String type, int num, int page) {
+        return mGankNewsNetworkDataSource.loadMore(type, num, page);
+    }
 }

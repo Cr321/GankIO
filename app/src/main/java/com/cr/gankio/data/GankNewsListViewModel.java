@@ -26,4 +26,8 @@ public class GankNewsListViewModel extends ViewModel {
     public LiveData<List<GankNews>> getGankNewsList(String type, int num, int page) {
         return mRepository.getGanksNewsList(type, num, page);
     }
+
+    public LiveData<List<GankNews>> loadMore() {
+        return mRepository.loadMore(mType, 20, ++page);
+    }
 }

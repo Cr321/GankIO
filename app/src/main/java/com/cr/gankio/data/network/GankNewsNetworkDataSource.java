@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GankNewsNetworkDataSource {
 
-	private static final String TAG = "GankNewsNetworkDataSource";
+	private static final String TAG = "NetworkDataSource";
 
 	private static final Object LOCK = new Object();
 	private static GankNewsNetworkDataSource mInstance;
@@ -66,10 +66,32 @@ public class GankNewsNetworkDataSource {
 
 			@Override
 			public void onFailure(Call<GankNewsList> call, Throwable t) {
-				Log.d(TAG, "onFailure: ");
+				Log.d(TAG, "onFailure! ");
 			}
 		});
 		return datas.get(type);
 	}
+
+	public LiveData<List<GankNews>> loadMore(String type, int num, int page) {
+        Call<GankNewsList> call = gankIOService.getGankNewsList(type, num, page);
+        if (!datas.containsKey(type)) {
+            MutableLiveData<List<GankNews>> data = new MutableLiveData<>();
+            datas.put(type, data);
+        }
+        call.enqueue(new Callback<GankNewsList>() {
+            @Override
+            public void onResponse(Call<GankNewsList> call, Response<GankNewsList> response) {
+                List<GankNews> temp = datas.get(type).getValue();
+                temp.addAll(response.body().getResults());
+                datas.get(type).setValue(temp);
+            }
+
+            @Override
+            public void onFailure(Call<GankNewsList> call, Throwable t) {
+                Log.d(TAG, "onFailure! ");
+            }
+        });
+        return datas.get(type);
+    }
 
 }

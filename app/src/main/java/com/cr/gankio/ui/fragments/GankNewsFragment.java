@@ -30,6 +30,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private GankNewsListViewModel mViewModel;
+    private GankNewsAdapter mAdapter;
     private View rootView;
 
     private static final String ARG_TYPE = "type";
@@ -78,8 +79,13 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
         GankNewsNetworkDataSource gankNewsNetworkDataSource = GankNewsNetworkDataSource.getInstance();
         GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository.getInstance(gankNewsNetworkDataSource), mType);
         mViewModel = ViewModelProviders.of(this,factory).get(GankNewsListViewModel.class);
+
         mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews-> {
-            GankNewsAdapter mAdapter = new GankNewsAdapter(this, mGankNews,this::onClick);
+            if (mAdapter == null) {
+                mAdapter = new GankNewsAdapter(this, mGankNews,this);
+            } else {
+                mAdapter.setItems(mGankNews);
+            }
             if (Constants.TYPE_WELFARE.equals(mType)) {
                 mAdapter.setshowImage(true);
             }
@@ -106,5 +112,10 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
     private void refresh() {
         //Todo Will modify lately
         mViewModel.getGankNewsList(mType, 20, 1);
+    }
+
+    @Override
+    public void loadMore() {
+        mViewModel.loadMore();
     }
 }
