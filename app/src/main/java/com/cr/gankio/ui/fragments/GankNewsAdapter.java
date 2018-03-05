@@ -23,6 +23,7 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<GankNews> items;
     private final GankNewsAdapterOnItemClickHandler mClickHandler;
     private boolean showImage;
+    private boolean isLoading = false;
     private GankNewsFragment fragment;
 
     private final int TYPE_FOOTER = 2000;
@@ -40,6 +41,10 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setItems(List<GankNews> items) {
         this.items = items;
+    }
+
+    public void setLoading(boolean loading) {
+        this.isLoading = loading;
     }
 
     @Override
@@ -64,7 +69,7 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof ImageViewHolder) {
             ((ImageViewHolder) holder).bind(items.get(position));
         } else if (holder instanceof FooterViewHolder) {
-            //TODO;
+            ((FooterViewHolder) holder).bind();
         }
     }
 
@@ -84,7 +89,7 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (null == items) {
             return 0;
         } else {
-            return items.size();
+            return items.size()+1;
         }
     }
 
@@ -141,11 +146,24 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemView.setOnClickListener(this);
         }
 
+        public void bind() {
+            if (isLoading) {
+                textView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                textView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+            }
+        }
+
         @Override
         public void onClick(View v) {
-            mClickHandler.loadMore();
-            textView.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
+            if (!isLoading) {
+                mClickHandler.loadMore();
+                textView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                isLoading = true;
+            }
         }
     }
 

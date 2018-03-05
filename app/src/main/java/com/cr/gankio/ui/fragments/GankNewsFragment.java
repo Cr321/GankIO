@@ -68,6 +68,15 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         } else {
             mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+            ((GridLayoutManager) mRecyclerView.getLayoutManager()).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    if (position == mAdapter.getItemCount()-1) {
+                        return 2;
+                    }
+                    return 1;
+                }
+            });
         }
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -83,13 +92,15 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
         mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews-> {
             if (mAdapter == null) {
                 mAdapter = new GankNewsAdapter(this, mGankNews,this);
+                if (Constants.TYPE_WELFARE.equals(mType)) {
+                    mAdapter.setshowImage(true);
+                }
+                mRecyclerView.setAdapter(mAdapter);
             } else {
                 mAdapter.setItems(mGankNews);
+                mAdapter.setLoading(false);
+                mAdapter.notifyDataSetChanged();
             }
-            if (Constants.TYPE_WELFARE.equals(mType)) {
-                mAdapter.setshowImage(true);
-            }
-            mRecyclerView.setAdapter(mAdapter);
             if (mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
