@@ -8,18 +8,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.cr.gankio.Constants;
 import com.cr.gankio.R;
-import com.cr.gankio.data.GankIOService;
 import com.cr.gankio.data.GankNewsListViewModel;
 import com.cr.gankio.data.GankRepository;
 import com.cr.gankio.data.network.GankNewsNetworkDataSource;
 import com.cr.gankio.ui.web.WebActivity;
+import com.cr.library.ui.ExtendRecyclerView;
 
 /**
  * @author RUI CAI
@@ -27,7 +27,7 @@ import com.cr.gankio.ui.web.WebActivity;
  */
 
 public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNewsAdapterOnItemClickHandler{
-    private RecyclerView mRecyclerView;
+    private ExtendRecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private GankNewsListViewModel mViewModel;
     private GankNewsAdapter mAdapter;
@@ -35,6 +35,8 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
 
     private static final String ARG_TYPE = "type";
     private String mType;
+
+    private static final String TAG = "GankNewsFragment";
 
     public static GankNewsFragment newInstance(String type) {
         GankNewsFragment fragment = new GankNewsFragment();
@@ -64,20 +66,25 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
 
     private void initView(View rootView) {
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
+        GankNewsNetworkDataSource gankNewsNetworkDataSource = GankNewsNetworkDataSource.getInstance();
+        GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository.getInstance(gankNewsNetworkDataSource), mType);
+        mViewModel = ViewModelProviders.of(this,factory).get(GankNewsListViewModel.class);
         if (!Constants.TYPE_WELFARE.equals(mType)) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         } else {
             mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-            ((GridLayoutManager) mRecyclerView.getLayoutManager()).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    if (position == mAdapter.getItemCount()-1) {
-                        return 2;
-                    }
-                    return 1;
-                }
-            });
         }
+        View foot_view = LayoutInflater.from(getContext()).inflate(R.layout.footer_layout, mRecyclerView, false);
+        foot_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mAdapter.getLoading()) {
+                    mViewModel.loadMore();
+                    mAdapter.setLoading(true);
+                }
+            }
+        });
+        mRecyclerView.addFooterView(foot_view);
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -85,9 +92,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
                 refresh();
             }
         });
-        GankNewsNetworkDataSource gankNewsNetworkDataSource = GankNewsNetworkDataSource.getInstance();
-        GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository.getInstance(gankNewsNetworkDataSource), mType);
-        mViewModel = ViewModelProviders.of(this,factory).get(GankNewsListViewModel.class);
+
 
         mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews-> {
             if (mAdapter == null) {
@@ -99,7 +104,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
             } else {
                 mAdapter.setItems(mGankNews);
                 mAdapter.setLoading(false);
-                mAdapter.notifyDataSetChanged();
+                mRecyclerView.getAdapter().notifyDataSetChanged();
             }
             if (mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -123,10 +128,5 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
     private void refresh() {
         //Todo Will modify lately
         mViewModel.getGankNewsList(mType, 20, 1);
-    }
-
-    @Override
-    public void loadMore() {
-        mViewModel.loadMore();
     }
 }

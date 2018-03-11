@@ -1,20 +1,10 @@
 package com.cr.gankio.data;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 
 import com.cr.gankio.data.network.GankNewsNetworkDataSource;
 
 import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author RUI CAI

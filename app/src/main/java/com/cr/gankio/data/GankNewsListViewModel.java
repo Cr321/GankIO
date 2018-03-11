@@ -5,8 +5,6 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * @author RUI CAI
  * @date 2017/11/8
