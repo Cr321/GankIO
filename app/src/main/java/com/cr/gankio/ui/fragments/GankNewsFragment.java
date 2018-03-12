@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.cr.gankio.Constants;
 import com.cr.gankio.R;
@@ -29,6 +31,8 @@ import com.cr.library.ui.ExtendRecyclerView;
 public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNewsAdapterOnItemClickHandler{
     private ExtendRecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private TextView tv_load;
+    private ProgressBar progressBar;
     private GankNewsListViewModel mViewModel;
     private GankNewsAdapter mAdapter;
     private View rootView;
@@ -75,10 +79,14 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
             mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
         View foot_view = LayoutInflater.from(getContext()).inflate(R.layout.footer_layout, mRecyclerView, false);
+        tv_load = foot_view.findViewById(R.id.footer_tv);
+        progressBar = foot_view.findViewById(R.id.footer_progressbar);
         foot_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mAdapter.getLoading()) {
+                    tv_load.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
                     mViewModel.loadMore();
                     mAdapter.setLoading(true);
                 }
@@ -105,6 +113,8 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
                 mAdapter.setItems(mGankNews);
                 mAdapter.setLoading(false);
                 mRecyclerView.getAdapter().notifyDataSetChanged();
+                tv_load.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
             if (mSwipeRefreshLayout.isRefreshing()) {
                 mSwipeRefreshLayout.setRefreshing(false);
