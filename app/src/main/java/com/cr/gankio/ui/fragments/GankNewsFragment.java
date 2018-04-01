@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +77,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
         if (!Constants.TYPE_WELFARE.equals(mType)) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         } else {
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         }
         View foot_view = LayoutInflater.from(getContext()).inflate(R.layout.footer_layout, mRecyclerView, false);
         tv_load = foot_view.findViewById(R.id.footer_tv);

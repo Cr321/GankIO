@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.cr.gankio.R;
 import com.cr.gankio.data.GankNews;
 
@@ -120,8 +122,13 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         public void bind(GankNews news) {
+            RequestOptions options = new RequestOptions();
+            options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
             String url = items.get(getAdapterPosition()).getUrl();
-            Glide.with(fragment).load(url).into(imageView);
+            Glide.with(fragment)
+                    .load(url)
+                    .apply(options)
+                    .into(imageView);
         }
     }
 

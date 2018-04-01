@@ -68,8 +68,9 @@ public class ExtendRecyclerView extends RecyclerView {
 
     @Override
     public void setAdapter(Adapter adapter) {
-        if (!(adapter instanceof WrapperRecyclerViewAdapter))
+        if (!(adapter instanceof WrapperRecyclerViewAdapter)) {
             mAdapter = new WrapperRecyclerViewAdapter(mHeaderViewInfos, mFooterViewInfos, adapter);
+        }
         super.setAdapter(mAdapter);
 
         if (isShouldSpan) {
@@ -84,8 +85,9 @@ public class ExtendRecyclerView extends RecyclerView {
 
     @Override
     public void setLayoutManager(LayoutManager layout) {
-        if (layout instanceof GridLayoutManager || layout instanceof StaggeredGridLayoutManager)
+        if (layout instanceof GridLayoutManager || layout instanceof StaggeredGridLayoutManager) {
             isShouldSpan = true;
+        }
         super.setLayoutManager(layout);
     }
 }

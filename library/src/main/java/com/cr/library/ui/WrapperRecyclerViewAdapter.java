@@ -140,7 +140,7 @@ public class WrapperRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
         if (isStaggered) {
             StaggeredGridLayoutManager.LayoutParams params = new StaggeredGridLayoutManager.LayoutParams(StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT,
-                    0);
+                    StaggeredGridLayoutManager.LayoutParams.WRAP_CONTENT);
             params.setFullSpan(true);
             itemView.setLayoutParams(params);
         }
