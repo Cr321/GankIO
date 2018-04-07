@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import com.cr.gankio.Constants;
 import com.cr.gankio.R;
 import com.cr.gankio.data.GankNewsListViewModel;
 import com.cr.gankio.data.GankRepository;
-import com.cr.gankio.data.network.GankNewsNetworkDataSource;
 import com.cr.gankio.ui.web.WebActivity;
 import com.cr.library.ui.ExtendRecyclerView;
 
@@ -71,8 +68,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
 
     private void initView(View rootView) {
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
-        GankNewsNetworkDataSource gankNewsNetworkDataSource = GankNewsNetworkDataSource.getInstance();
-        GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository.getInstance(gankNewsNetworkDataSource), mType);
+        GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository.getInstance(getActivity()), mType);
         mViewModel = ViewModelProviders.of(this,factory).get(GankNewsListViewModel.class);
         if (!Constants.TYPE_WELFARE.equals(mType)) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

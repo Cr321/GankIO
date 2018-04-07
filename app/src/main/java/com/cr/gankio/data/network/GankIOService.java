@@ -1,4 +1,6 @@
-package com.cr.gankio.data;
+package com.cr.gankio.data.network;
+
+import com.cr.gankio.data.database.GankNewsList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -3,6 +3,9 @@ package com.cr.gankio.data;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.cr.gankio.data.database.GankNews;
+
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,7 +28,7 @@ public class GankNewsListViewModel extends ViewModel {
         return mRepository.getGanksNewsList(type, num, page);
     }
 
-    public LiveData<List<GankNews>> loadMore() {
-        return mRepository.loadMore(mType, 20, ++page);
+    public void loadMore() {
+        mRepository.loadMore(mType, 20, ++page);
     }
 }

@@ -4,11 +4,12 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
-import com.cr.gankio.data.GankIOService;
-import com.cr.gankio.data.GankNews;
-import com.cr.gankio.data.GankNewsList;
+import com.cr.gankio.Constants;
+import com.cr.gankio.data.database.GankNews;
+import com.cr.gankio.data.database.GankNewsList;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,14 +29,14 @@ public class GankNewsNetworkDataSource {
 	private static final String TAG = "NetworkDataSource";
 
 	private static final Object LOCK = new Object();
-	private static GankNewsNetworkDataSource mInstance;
+	private static volatile GankNewsNetworkDataSource mInstance;
 	private final Map<String, MutableLiveData<List<GankNews>>> datas;
 	private final GankIOService gankIOService;
 
 	private static final String baseurl = "http://gank.io/api/";
 
-	private GankNewsNetworkDataSource() {
-		datas = new HashMap<>();
+	private GankNewsNetworkDataSource(Map<String, MutableLiveData<List<GankNews>>> datas) {
+		this.datas = datas;
 		Retrofit retrofit = new Retrofit.Builder()
 				.baseUrl(baseurl)
 				.addConverterFactory(GsonConverterFactory.create())
@@ -43,25 +44,25 @@ public class GankNewsNetworkDataSource {
 		gankIOService = retrofit.create(GankIOService.class);
 	}
 
-	public synchronized static GankNewsNetworkDataSource getInstance() {
+	public synchronized static GankNewsNetworkDataSource getInstance(Map<String, MutableLiveData<List<GankNews>>> datas) {
 		if (mInstance == null) {
 			synchronized (LOCK) {
-				mInstance = new GankNewsNetworkDataSource();
+				if (mInstance == null) {
+					mInstance = new GankNewsNetworkDataSource(datas);
+				}
 			}
 		}
 		return mInstance;
 	}
 
-	public LiveData<List<GankNews>> getGanksNewsList(String type, int num, int page) {
+	public void getGanksNewsList(String type, int num, int page) {
 		Call<GankNewsList> call = gankIOService.getGankNewsList(type, num, page);
-		if (!datas.containsKey(type)) {
-			MutableLiveData<List<GankNews>> data = new MutableLiveData<>();
-			datas.put(type, data);
-		}
 		call.enqueue(new Callback<GankNewsList>() {
 			@Override
 			public void onResponse(Call<GankNewsList> call, Response<GankNewsList> response) {
-				datas.get(type).setValue(response.body().getResults());
+				List<GankNews> result = response.body().getResults();
+				result.addAll(datas.get(type).getValue());
+				datas.get(type).setValue(result);
 			}
 
 			@Override
@@ -69,15 +70,11 @@ public class GankNewsNetworkDataSource {
 				Log.d(TAG, "onFailure! ");
 			}
 		});
-		return datas.get(type);
+		return;
 	}
 
-	public LiveData<List<GankNews>> loadMore(String type, int num, int page) {
+	public void loadMore(String type, int num, int page) {
         Call<GankNewsList> call = gankIOService.getGankNewsList(type, num, page);
-        if (!datas.containsKey(type)) {
-            MutableLiveData<List<GankNews>> data = new MutableLiveData<>();
-            datas.put(type, data);
-        }
         call.enqueue(new Callback<GankNewsList>() {
             @Override
             public void onResponse(Call<GankNewsList> call, Response<GankNewsList> response) {
@@ -91,7 +88,6 @@ public class GankNewsNetworkDataSource {
                 Log.d(TAG, "onFailure! ");
             }
         });
-        return datas.get(type);
+        return;
     }
-
 }

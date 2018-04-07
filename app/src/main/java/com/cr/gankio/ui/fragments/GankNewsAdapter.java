@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.cr.gankio.R;
-import com.cr.gankio.data.GankNews;
+import com.cr.gankio.data.database.GankNews;
 
 import java.util.List;
 
