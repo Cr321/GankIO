@@ -61,8 +61,23 @@ public class GankNewsNetworkDataSource {
 			@Override
 			public void onResponse(Call<GankNewsList> call, Response<GankNewsList> response) {
 				List<GankNews> result = response.body().getResults();
-				result.addAll(datas.get(type).getValue());
-				datas.get(type).setValue(result);
+				MutableLiveData<List<GankNews>> data = datas.get(type);
+				int result_size = result.size();
+				if (result_size > 0) {
+					int index = 0;
+					List<GankNews> temp = data.getValue();
+					if (temp.size() > 0) {
+						String target_id = temp.get(0).get_id();
+						while (index < result_size && !result.get(index).get_id().equals(target_id)) {
+							index++;
+						}
+						if (index != result_size) {
+							result = result.subList(0, index);
+						}
+					}
+				}
+				result.addAll(data.getValue());
+				data.setValue(result);
 			}
 
 			@Override
