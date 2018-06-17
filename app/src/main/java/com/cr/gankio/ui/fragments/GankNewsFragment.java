@@ -11,6 +11,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.cr.gankio.data.GankNewsListViewModel;
 import com.cr.gankio.data.GankRepository;
 import com.cr.gankio.ui.web.WebActivity;
 import com.cr.library.ui.ExtendRecyclerView;
+import com.thefinestartist.finestwebview.FinestWebView;
 
 /**
  * @author RUI CAI
@@ -127,9 +129,23 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
 
     @Override
     public void onClick(String url) {
-        Intent intent = new Intent(this.getActivity(), WebActivity.class);
+        /*Intent intent = new Intent(this.getActivity(), WebActivity.class);
         intent.putExtra("url", url);
-        startActivity(intent);
+        startActivity(intent);*/
+        new FinestWebView.Builder(getActivity())
+                .toolbarColorRes(R.color.colorPrimary)
+                .statusBarColorRes(R.color.colorPrimaryDark)
+                .titleColorRes(android.R.color.white)
+                .iconDefaultColorRes(android.R.color.white)
+                .webViewJavaScriptEnabled(true)
+                .webViewUseWideViewPort(true)
+                .webViewLoadWithOverviewMode(true)
+                .webViewSupportZoom(true)
+                .webViewBuiltInZoomControls(true)
+                .webViewDisplayZoomControls(false)
+                .webViewMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW)
+                .webViewLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN)
+                .show(url);
     }
 
     private void refresh() {
