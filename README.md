@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Cr321/GankIO.svg?branch=master)](https://travis-ci.org/Cr321/GankIO)
 ### [GankIO](http://gank.io/) Android 客户端 感谢 代码家 提供Api支持！
 ### APP
 使用 Android Architecture Components 开发的基于 MVVM 框架的 GankIO 客户端
