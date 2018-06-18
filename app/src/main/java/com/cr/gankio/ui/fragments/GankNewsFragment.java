@@ -1,5 +1,6 @@
 package com.cr.gankio.ui.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +20,12 @@ import com.cr.gankio.Constants;
 import com.cr.gankio.R;
 import com.cr.gankio.data.GankNewsListViewModel;
 import com.cr.gankio.data.GankRepository;
+import com.cr.gankio.data.database.GankNews;
 import com.cr.gankio.ui.web.WebActivity;
 import com.cr.library.ui.ExtendRecyclerView;
 import com.thefinestartist.finestwebview.FinestWebView;
+
+import java.util.List;
 
 /**
  * @author RUI CAI
@@ -36,6 +40,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
     private GankNewsListViewModel mViewModel;
     private GankNewsAdapter mAdapter;
     private View rootView;
+    private GankNewsFragment mInstance;
 
     private static final String ARG_TYPE = "type";
     private String mType;
@@ -56,6 +61,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
         if (getArguments() != null) {
             mType = getArguments().getString(ARG_TYPE);
         }
+        mInstance = this;
     }
 
     @Nullable
@@ -101,22 +107,25 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
         });
 
 
-        mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews-> {
-            if (mAdapter == null) {
-                mAdapter = new GankNewsAdapter(this, mGankNews,this);
-                if (Constants.TYPE_WELFARE.equals(mType)) {
-                    mAdapter.setshowImage(true);
+        mViewModel.getGankNewsList(mType, 20, 1).observe(this, new Observer<List<GankNews>>() {
+            @Override
+            public void onChanged(@Nullable List<GankNews> mGankNews) {
+                if (mAdapter == null) {
+                    mAdapter = new GankNewsAdapter(mInstance, mGankNews,mInstance);
+                    if (Constants.TYPE_WELFARE.equals(mType)) {
+                        mAdapter.setshowImage(true);
+                    }
+                    mRecyclerView.setAdapter(mAdapter);
+                } else {
+                    mAdapter.setItems(mGankNews);
+                    mAdapter.setLoading(false);
+                    mRecyclerView.getAdapter().notifyDataSetChanged();
+                    tv_load.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
-                mRecyclerView.setAdapter(mAdapter);
-            } else {
-                mAdapter.setItems(mGankNews);
-                mAdapter.setLoading(false);
-                mRecyclerView.getAdapter().notifyDataSetChanged();
-                tv_load.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-            }
-            if (mSwipeRefreshLayout.isRefreshing()) {
-                mSwipeRefreshLayout.setRefreshing(false);
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
     }

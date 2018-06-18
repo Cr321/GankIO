@@ -55,7 +55,7 @@ public class GankNewsNetworkDataSource {
 		return mInstance;
 	}
 
-	public void getGanksNewsList(String type, int num, int page) {
+	public void getGanksNewsList(final String type, int num, int page) {
 		Call<GankNewsList> call = gankIOService.getGankNewsList(type, num, page);
 		call.enqueue(new Callback<GankNewsList>() {
 			@Override
@@ -88,7 +88,7 @@ public class GankNewsNetworkDataSource {
 		return;
 	}
 
-	public void loadMore(String type, int num, int page) {
+	public void loadMore(final String type, int num, int page) {
         Call<GankNewsList> call = gankIOService.getGankNewsList(type, num, page);
         call.enqueue(new Callback<GankNewsList>() {
             @Override

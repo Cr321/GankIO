@@ -2,8 +2,10 @@ package com.cr.gankio.data;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.cr.gankio.data.database.GankIODatabase;
 import com.cr.gankio.data.database.GankNews;
@@ -47,17 +49,26 @@ public class GankRepository {
         return mInstance;
     }
 
-    public LiveData<List<GankNews>> getGanksNewsList(String type, int num, int page) {
-        MutableLiveData<List<GankNews>> temp;
+    public LiveData<List<GankNews>> getGanksNewsList(final String type, int num, int page) {
+        final MutableLiveData<List<GankNews>> temp;
         if (!maps.containsKey(type)) {
             temp = new MutableLiveData<>();
-            Executors.newSingleThreadExecutor().execute(() -> {
-                temp.postValue(gankNewsDao.getByType(type));
+            Executors.newSingleThreadExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    temp.postValue(gankNewsDao.getByType(type));
+                }
             });
-            temp.observeForever(gankNews -> {
-                Executors.newSingleThreadExecutor().execute(()->{
-                    gankNewsDao.insertAll(gankNews);
-                });
+            temp.observeForever(new Observer<List<GankNews>>() {
+                @Override
+                public void onChanged(@Nullable final List<GankNews> gankNews) {
+                    Executors.newSingleThreadExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            gankNewsDao.insertAll(gankNews);
+                        }
+                    });
+                }
             });
             maps.put(type, temp);
         } else {
