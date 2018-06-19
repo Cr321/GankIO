@@ -107,27 +107,25 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
         });
 
 
-        mViewModel.getGankNewsList(mType, 20, 1).observe(this, new Observer<List<GankNews>>() {
-            @Override
-            public void onChanged(@Nullable List<GankNews> mGankNews) {
-                if (mAdapter == null) {
-                    mAdapter = new GankNewsAdapter(mInstance, mGankNews,mInstance);
-                    if (Constants.TYPE_WELFARE.equals(mType)) {
-                        mAdapter.setshowImage(true);
+        mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews-> {
+                    if (mAdapter == null) {
+                        mAdapter = new GankNewsAdapter(mInstance, mGankNews,mInstance);
+                        if (Constants.TYPE_WELFARE.equals(mType)) {
+                            mAdapter.setshowImage(true);
+                        }
+                        mRecyclerView.setAdapter(mAdapter);
+                    } else {
+                        mAdapter.setItems(mGankNews);
+                        mAdapter.setLoading(false);
+                        mRecyclerView.getAdapter().notifyDataSetChanged();
+                        tv_load.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
-                    mRecyclerView.setAdapter(mAdapter);
-                } else {
-                    mAdapter.setItems(mGankNews);
-                    mAdapter.setLoading(false);
-                    mRecyclerView.getAdapter().notifyDataSetChanged();
-                    tv_load.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
+                    if (mSwipeRefreshLayout.isRefreshing()) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
                 }
-                if (mSwipeRefreshLayout.isRefreshing()) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-            }
-        });
+        );
     }
 
     @Override

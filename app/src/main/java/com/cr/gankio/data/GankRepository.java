@@ -53,22 +53,13 @@ public class GankRepository {
         final MutableLiveData<List<GankNews>> temp;
         if (!maps.containsKey(type)) {
             temp = new MutableLiveData<>();
-            Executors.newSingleThreadExecutor().execute(new Runnable() {
-                @Override
-                public void run() {
-                    temp.postValue(gankNewsDao.getByType(type));
-                }
+            Executors.newSingleThreadExecutor().execute(()->{
+                temp.postValue(gankNewsDao.getByType(type));
             });
-            temp.observeForever(new Observer<List<GankNews>>() {
-                @Override
-                public void onChanged(@Nullable final List<GankNews> gankNews) {
-                    Executors.newSingleThreadExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            gankNewsDao.insertAll(gankNews);
-                        }
-                    });
-                }
+            temp.observeForever(gankNews-> {
+                Executors.newSingleThreadExecutor().execute(()->{
+                    gankNewsDao.insertAll(gankNews);
+                });
             });
             maps.put(type, temp);
         } else {
