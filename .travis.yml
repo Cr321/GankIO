@@ -13,7 +13,7 @@ android:
   - android-sdk-preview-license-52d11cd2
   - android-sdk-license-.+
   script:
-  - "./gradlew assembleRelease"
+  - "./gradlew clean build"
   before_install:
   - yes | sdkmanager "platforms;android-27"
   cache:
@@ -23,4 +23,17 @@ android:
     - "$HOME/.android/build-cache"
 before_install:
 - openssl aes-256-cbc -K $encrypted_ecfe38924c1b_key -iv $encrypted_ecfe38924c1b_iv
-  -in cr.jks.enc -out ../cr.jks -d
+  -in archive.tar.gz.enc -out archive.tar.gz -d
+- tar -xzvf archive.tar.gz
+deploy:
+  provider: releases
+  api_key:
+    secure: HQsTA+jA6Knw4dfnVb9ktrjPnpqrcm+h+Iml/CKyhEniK0yk8TT8/n6ZSTgCpSPoBtEOcQmROEwEWhKyt89gYT+quI9wZT5TZJIucEhB6hccgYAY/Q843vsASUihSOIWZmmgp0i9LCTluSOFbXIEPBtNW6/krGKCA7Y5PsnYzrpXuM+sGyrTTr7apnQXySZ8br+oiFfXXVQ8ZFVH0JKKH3iSASgrPR97npWFM45agcANHY3SIux4bBx/8zSdzfeZ8Ey/wSD3cLm6JYruZ2iFekaLhyVr7Nryo4F1h0WOmmUudIOBGFLohzOhWD5Amas47bafLnVNsC6BOMDScD20IbWmDO2dzmgyrxQB0////1a4EzElYeT5ABz1cFt+MupTzsMgxWySw2ZU6c5X1RA+0LwWjJPr98oIA/MZhcD18U1xuLLHFen1yO6Wl+OTQt8QbGv1yJSX2s9OnPNeaF37AeePxJ01UAIkMiXZm2eZDOIi+WKq9igx86q0idrUlU/NUabbrtgeSt1TqyOhssWl/omHpNwoFmuA+r/JmAnaLrnfeg9sOwli1BNHQnUARQbjsxqrU90qr2ykinmhH1M2HxaJZ+k7hHb1cpY2wYzMKkQ9RrOcoRjsey0BMwDv74SWAmWdXBF04UaPYgQtbPt7aVOxLNahRiVntCSnpqVb48c=
+  file: app/build/outputs/apk/release/app-release.apk
+  skip_cleanup: true
+  on:
+    repo: Cr321/GankIO
+    tags: true
+
+notifications:
+  email: false

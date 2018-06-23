@@ -139,4 +139,8 @@ fabric.properties
 /captures
 .externalNativeBuild
 
+## keystore
+cr.jks
+keystore.properties
+archive.tar.gz
 # End of https://www.gitignore.io/api/androidstudio
