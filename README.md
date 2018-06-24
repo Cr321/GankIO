@@ -8,6 +8,16 @@
 ### 开发环境配置
 使用 Android Studio 3.1 打开导入 settings.gradle 文件
 
+在项目根目录创建自己的 jks 签名库 和 keystore.properties 配置文件
+
+keystore.properties 的格式如下：
+
+```storeFile=
+storePassword=
+keyAlias=
+keyPassword=
+```
+
 ### 开源库
 1. [Glide](https://github.com/bumptech/glide)
 
