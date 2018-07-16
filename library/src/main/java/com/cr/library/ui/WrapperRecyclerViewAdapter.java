@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 public class WrapperRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public ArrayList<ExtendRecyclerView.FixedViewInfo> mHeaderViewInfos;
-    public ArrayList<ExtendRecyclerView.FixedViewInfo> mFooterViewInfos;
-    public RecyclerView.Adapter mAdapter;
-    public ArrayList<ExtendRecyclerView.FixedViewInfo> EMPTY_INFO_LIST = new ArrayList<>();
+    private ArrayList<ExtendRecyclerView.FixedViewInfo> mHeaderViewInfos;
+    private ArrayList<ExtendRecyclerView.FixedViewInfo> mFooterViewInfos;
+    private RecyclerView.Adapter mAdapter;
+    private ArrayList<ExtendRecyclerView.FixedViewInfo> EMPTY_INFO_LIST = new ArrayList<>();
     private boolean isStaggered;
 
     public WrapperRecyclerViewAdapter(ArrayList<ExtendRecyclerView.FixedViewInfo> headerViewInfos,
