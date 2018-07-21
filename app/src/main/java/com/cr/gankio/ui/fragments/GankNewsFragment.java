@@ -139,7 +139,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
         /*Intent intent = new Intent(this.getActivity(), WebActivity.class);
         intent.putExtra("url", url);
         startActivity(intent);*/
-        new FinestWebView.Builder(getActivity())
+        new FinestWebView.Builder(getActivity().getApplicationContext())
                 .toolbarColorRes(R.color.colorPrimary)
                 .statusBarColorRes(R.color.colorPrimaryDark)
                 .titleColorRes(android.R.color.white)
