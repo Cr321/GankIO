@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.cr.gankio.R;
 import com.cr.gankio.data.database.GankNews;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -93,17 +94,21 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView title;
         private TextView decs;
+        private TextView date;
 
         public ListViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             decs = itemView.findViewById(R.id.desc);
+            date = itemView.findViewById(R.id.date);
             itemView.setOnClickListener(this);
         }
 
         public void bind(GankNews news) {
             title.setText(news.getDesc());
-            decs.setText(news.getType());
+            decs.setText(news.getWho());
+            StringBuilder createDate = new StringBuilder(news.getCreatedAt());
+            date.setText(createDate.substring(0,createDate.indexOf("T")));
         }
 
         @Override
