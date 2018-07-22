@@ -13,12 +13,13 @@ android {
     buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.cr.gankio"
-        minSdkVersion 24
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
     }
+
     signingConfigs {
         config {
             storeFile rootProject.file(keystoreProperties['storeFile'])
