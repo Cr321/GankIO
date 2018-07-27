@@ -1,15 +1,11 @@
 package com.cr.gankio.data.network;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
-import com.cr.gankio.Constants;
 import com.cr.gankio.data.database.GankNews;
 import com.cr.gankio.data.database.GankNewsList;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 

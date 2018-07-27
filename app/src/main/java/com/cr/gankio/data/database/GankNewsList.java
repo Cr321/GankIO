@@ -1,6 +1,5 @@
 package com.cr.gankio.data.database;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**

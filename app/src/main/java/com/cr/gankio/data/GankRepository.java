@@ -2,10 +2,8 @@ package com.cr.gankio.data;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.cr.gankio.data.database.GankIODatabase;
 import com.cr.gankio.data.database.GankNews;
@@ -13,7 +11,6 @@ import com.cr.gankio.data.database.GankNewsDao;
 import com.cr.gankio.data.network.GankNewsNetworkDataSource;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;

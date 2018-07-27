@@ -1,8 +1,6 @@
 package com.cr.gankio.ui.fragments;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,12 +18,8 @@ import com.cr.gankio.Constants;
 import com.cr.gankio.R;
 import com.cr.gankio.data.GankNewsListViewModel;
 import com.cr.gankio.data.GankRepository;
-import com.cr.gankio.data.database.GankNews;
-import com.cr.gankio.ui.web.WebActivity;
 import com.cr.library.ui.ExtendRecyclerView;
 import com.thefinestartist.finestwebview.FinestWebView;
-
-import java.util.List;
 
 /**
  * @author RUI CAI

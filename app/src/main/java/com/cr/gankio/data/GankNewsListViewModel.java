@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModel;
 
 import com.cr.gankio.data.database.GankNews;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**

@@ -33,7 +33,5 @@ dependencies {
     api 'com.android.support:recyclerview-v7:27.1.1'
     debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    api 'com.github.bumptech.glide:glide:4.6.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     api 'com.thefinestartist:finestwebview:1.2.7'
 }

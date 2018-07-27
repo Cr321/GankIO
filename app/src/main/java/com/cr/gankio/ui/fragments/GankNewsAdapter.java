@@ -7,13 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
+import com.cr.gankio.GlideApp;
 import com.cr.gankio.R;
 import com.cr.gankio.data.database.GankNews;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -127,12 +125,10 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         public void bind(GankNews news) {
-            RequestOptions options = new RequestOptions();
-            options.diskCacheStrategy(DiskCacheStrategy.RESOURCE);
             String url = items.get(getAdapterPosition()).getUrl();
-            Glide.with(fragment)
+            GlideApp.with(fragment)
                     .load(url)
-                    .apply(options)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(imageView);
         }
     }
