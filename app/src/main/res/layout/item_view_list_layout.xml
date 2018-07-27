@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/who"
                     android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textSize="12sp"

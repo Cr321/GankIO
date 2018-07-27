@@ -84,12 +84,11 @@ public class WrapperRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             return;
         }
         int adjPosition = position - numHeaders;
-        int adapterCount = 0;
+        int adapterCount;
         if (mAdapter != null) {
             adapterCount = mAdapter.getItemCount();
             if (adjPosition < adapterCount) {
                 mAdapter.onBindViewHolder(holder, adjPosition);
-                return;
             }
         }
     }

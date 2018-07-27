@@ -81,7 +81,6 @@ public class GankNewsNetworkDataSource {
 				Log.d(TAG, "onFailure! ");
 			}
 		});
-		return;
 	}
 
 	public void loadMore(final String type, int num, int page) {
@@ -99,6 +98,5 @@ public class GankNewsNetworkDataSource {
                 Log.d(TAG, "onFailure! ");
             }
         });
-        return;
-    }
+	}
 }

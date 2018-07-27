@@ -26,7 +26,8 @@ import com.thefinestartist.finestwebview.FinestWebView;
  * @date 2017/11/10
  */
 
-public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNewsAdapterOnItemClickHandler{
+public class GankNewsFragment extends Fragment implements GankNewsAdapter
+        .GankNewsAdapterOnItemClickHandler {
     private ExtendRecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView tv_load;
@@ -35,6 +36,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
     private GankNewsAdapter mAdapter;
     private View rootView;
     private GankNewsFragment mInstance;
+    private FinestWebView.Builder mFinestWebViewBuilder;
 
     private static final String ARG_TYPE = "type";
     private String mType;
@@ -60,7 +62,8 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
+            Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_news_list_layout, container, false);
             initView(rootView);
@@ -70,40 +73,35 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
 
     private void initView(View rootView) {
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
-        GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository.getInstance(getActivity()), mType);
-        mViewModel = ViewModelProviders.of(this,factory).get(GankNewsListViewModel.class);
+        GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository
+                .getInstance(getActivity()), mType);
+        mViewModel = ViewModelProviders.of(this, factory).get(GankNewsListViewModel.class);
         if (!Constants.TYPE_WELFARE.equals(mType)) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         } else {
-            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,
+                    StaggeredGridLayoutManager.VERTICAL));
         }
-        View foot_view = LayoutInflater.from(getContext()).inflate(R.layout.footer_layout, mRecyclerView, false);
+        View foot_view = LayoutInflater.from(getContext()).inflate(R.layout.footer_layout,
+                mRecyclerView, false);
         tv_load = foot_view.findViewById(R.id.footer_tv);
         progressBar = foot_view.findViewById(R.id.footer_progressbar);
-        foot_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mAdapter.getLoading()) {
-                    tv_load.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
-                    mViewModel.loadMore();
-                    mAdapter.setLoading(true);
-                }
+        foot_view.setOnClickListener(v -> {
+            if (!mAdapter.getLoading()) {
+                tv_load.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                mViewModel.loadMore();
+                mAdapter.setLoading(true);
             }
         });
         mRecyclerView.addFooterView(foot_view);
         mSwipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(this::refresh);
 
 
-        mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews-> {
+        mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews -> {
                     if (mAdapter == null) {
-                        mAdapter = new GankNewsAdapter(mInstance, mGankNews,mInstance);
+                        mAdapter = new GankNewsAdapter(mInstance, mGankNews, mInstance);
                         if (Constants.TYPE_WELFARE.equals(mType)) {
                             mAdapter.setshowImage(true);
                         }
@@ -130,23 +128,22 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter.GankNe
 
     @Override
     public void onClick(String url) {
-        /*Intent intent = new Intent(this.getActivity(), WebActivity.class);
-        intent.putExtra("url", url);
-        startActivity(intent);*/
-        new FinestWebView.Builder(getActivity().getApplicationContext())
-                .toolbarColorRes(R.color.colorPrimary)
-                .statusBarColorRes(R.color.colorPrimaryDark)
-                .titleColorRes(android.R.color.white)
-                .iconDefaultColorRes(android.R.color.white)
-                .webViewJavaScriptEnabled(true)
-                .webViewUseWideViewPort(true)
-                .webViewLoadWithOverviewMode(true)
-                .webViewSupportZoom(true)
-                .webViewBuiltInZoomControls(true)
-                .webViewDisplayZoomControls(false)
-                .webViewMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW)
-                .webViewLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN)
-                .show(url);
+        if (mFinestWebViewBuilder == null) {
+            mFinestWebViewBuilder = new FinestWebView.Builder(getActivity().getApplicationContext())
+                    .toolbarColorRes(R.color.colorPrimary)
+                    .statusBarColorRes(R.color.colorPrimaryDark)
+                    .titleColorRes(android.R.color.white)
+                    .iconDefaultColorRes(android.R.color.white)
+                    .webViewJavaScriptEnabled(true)
+                    .webViewUseWideViewPort(true)
+                    .webViewLoadWithOverviewMode(true)
+                    .webViewSupportZoom(true)
+                    .webViewBuiltInZoomControls(true)
+                    .webViewDisplayZoomControls(false)
+                    .webViewMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW)
+                    .webViewLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        }
+        mFinestWebViewBuilder.show(url);
     }
 
     private void refresh() {

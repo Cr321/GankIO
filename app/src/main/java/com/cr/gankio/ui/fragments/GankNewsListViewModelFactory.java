@@ -20,6 +20,7 @@ public class GankNewsListViewModelFactory extends ViewModelProvider.NewInstanceF
         this.mType = type;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         //noinspection unchecked
