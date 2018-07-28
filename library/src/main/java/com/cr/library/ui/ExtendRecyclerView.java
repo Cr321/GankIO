@@ -70,11 +70,10 @@ public class ExtendRecyclerView extends RecyclerView {
         if (!(adapter instanceof WrapperRecyclerViewAdapter)) {
             mAdapter = new WrapperRecyclerViewAdapter(mHeaderViewInfos, mFooterViewInfos, adapter);
         }
-        super.setAdapter(mAdapter);
-
         if (isShouldSpan) {
             ((WrapperRecyclerViewAdapter) mAdapter).adjustSpanSize(this);
         }
+        super.setAdapter(mAdapter);
     }
 
     @Override

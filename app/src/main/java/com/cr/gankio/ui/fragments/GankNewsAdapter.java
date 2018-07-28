@@ -1,6 +1,9 @@
 package com.cr.gankio.ui.fragments;
 
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,7 +131,6 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             String url = items.get(getAdapterPosition()).getUrl();
             GlideApp.with(fragment)
                     .load(url)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(imageView);
         }
     }
