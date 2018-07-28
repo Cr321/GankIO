@@ -128,7 +128,7 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         public void bind(GankNews news) {
-            String url = items.get(getAdapterPosition()).getUrl();
+            String url = news.getUrl();
             GlideApp.with(fragment)
                     .load(url)
                     .into(imageView);
