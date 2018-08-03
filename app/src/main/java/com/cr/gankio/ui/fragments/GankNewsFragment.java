@@ -77,21 +77,8 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter
         GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository
                 .getInstance(getActivity()), mType);
         mViewModel = ViewModelProviders.of(this, factory).get(GankNewsListViewModel.class);
-        if (!Constants.TYPE_WELFARE.equals(mType)) {
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        } else {
-            StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2,
-                    StaggeredGridLayoutManager.VERTICAL);
-            manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    manager.invalidateSpanAssignments();
-                }
-            });
-            mRecyclerView.setLayoutManager(manager);
-        }
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         View foot_view = LayoutInflater.from(getContext()).inflate(R.layout.footer_layout,
                 mRecyclerView, false);
         tv_load = foot_view.findViewById(R.id.footer_tv);

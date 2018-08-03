@@ -120,7 +120,7 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     class ImageViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
+        private SquareImageView imageView;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
