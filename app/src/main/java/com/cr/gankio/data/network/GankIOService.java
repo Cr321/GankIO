@@ -17,10 +17,11 @@ public interface GankIOService {
      * fetch GankIO news by type,num and page
      *
      * @param type type
-     * @param num request number
+     * @param num  request number
      * @param page page number
      * @return Call<GankNewsList>
      */
     @GET("data/{type}/{num}/{page}")
-    Call<GankNewsList> getGankNewsList(@Path("type") String type, @Path("num") int num, @Path("page") int page);
+    Call<GankNewsList> getGankNewsList(@Path("type") String type, @Path("num") int num, @Path
+            ("page") int page);
 }

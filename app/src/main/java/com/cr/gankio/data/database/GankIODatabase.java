@@ -9,5 +9,5 @@ import android.arch.persistence.room.RoomDatabase;
  */
 @Database(entities = {GankNews.class}, version = 1)
 public abstract class GankIODatabase extends RoomDatabase {
-	public abstract GankNewsDao gankNewsDao();
+    public abstract GankNewsDao gankNewsDao();
 }

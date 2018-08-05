@@ -7,22 +7,22 @@ import java.util.List;
  * @date 2018/4/6
  */
 public class GankNewsList {
-	private Boolean error;
-	private List<GankNews> results;
+    private Boolean error;
+    private List<GankNews> results;
 
-	public Boolean getError() {
-		return error;
-	}
+    public Boolean getError() {
+        return error;
+    }
 
-	public void setError(Boolean error) {
-		this.error = error;
-	}
+    public void setError(Boolean error) {
+        this.error = error;
+    }
 
-	public List<GankNews> getResults() {
-		return results;
-	}
+    public List<GankNews> getResults() {
+        return results;
+    }
 
-	public void setResults(List<GankNews> results) {
-		this.results = results;
-	}
+    public void setResults(List<GankNews> results) {
+        this.results = results;
+    }
 }

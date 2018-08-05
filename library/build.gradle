@@ -34,4 +34,5 @@ dependencies {
     debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     api 'com.thefinestartist:finestwebview:1.2.7'
+    api 'com.blankj:utilcode:1.18.1'
 }

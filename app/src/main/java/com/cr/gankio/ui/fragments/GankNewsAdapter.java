@@ -1,19 +1,16 @@
 package com.cr.gankio.ui.fragments;
 
-import android.support.v4.util.ArrayMap;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.cr.gankio.GlideApp;
 import com.cr.gankio.R;
 import com.cr.gankio.data.database.GankNews;
+import com.cr.gankio.ui.gallery.GalleryActivity;
 
 import java.util.List;
 
@@ -23,15 +20,15 @@ import java.util.List;
  */
 
 public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<GankNews> items;
     private final GankNewsAdapterOnItemClickHandler mClickHandler;
+    private final int TYPE_IMAGE = 3000;
+    private List<GankNews> items;
     private boolean showImage;
     private boolean isLoading = false;
     private GankNewsFragment fragment;
 
-    private final int TYPE_IMAGE = 3000;
-
-    public GankNewsAdapter(GankNewsFragment fragment, List<GankNews> items, GankNewsAdapterOnItemClickHandler mClickHandler) {
+    public GankNewsAdapter(GankNewsFragment fragment, List<GankNews> items,
+                           GankNewsAdapterOnItemClickHandler mClickHandler) {
         this.items = items;
         this.mClickHandler = mClickHandler;
         this.fragment = fragment;
@@ -45,22 +42,24 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.items = items;
     }
 
-    public void setLoading(boolean loading) {
-        this.isLoading = loading;
-    }
-
     public boolean getLoading() {
         return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        this.isLoading = loading;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         if (viewType == TYPE_IMAGE) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid_layout, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid_layout,
+                    parent, false);
             return new ImageViewHolder(view);
         } else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_list_layout, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout
+                    .item_view_list_layout, parent, false);
             return new ListViewHolder(view);
         }
     }
@@ -70,13 +69,13 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof ListViewHolder) {
             ((ListViewHolder) holder).bind(items.get(position));
         } else if (holder instanceof ImageViewHolder) {
-            ((ImageViewHolder) holder).bind(items.get(position));
+            ((ImageViewHolder) holder).bind(position);
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (showImage){
+        if (showImage) {
             return TYPE_IMAGE;
         } else {
             return super.getItemViewType(position);
@@ -92,7 +91,7 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void onClick(String url);
     }
 
-    class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView title;
         private TextView decs;
         private TextView date;
@@ -109,7 +108,7 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             title.setText(news.getDesc());
             decs.setText(news.getWho());
             StringBuilder createDate = new StringBuilder(news.getCreatedAt());
-            date.setText(createDate.substring(0,createDate.indexOf("T")));
+            date.setText(createDate.substring(0, createDate.indexOf("T")));
         }
 
         @Override
@@ -125,10 +124,16 @@ public class GankNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public ImageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.welfare_img);
+
         }
 
-        public void bind(GankNews news) {
-            String url = news.getUrl();
+        public void bind(int position) {
+            String url = items.get(position).getUrl();
+            imageView.setOnClickListener(v -> {
+                Intent intent = new Intent(fragment.getActivity(), GalleryActivity.class);
+                intent.putExtra(GalleryActivity.IMAGE_POSITION, position);
+                fragment.getActivity().startActivity(intent);
+            });
             GlideApp.with(fragment)
                     .load(url)
                     .into(imageView);

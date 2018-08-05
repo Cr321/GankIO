@@ -3,4 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_discovery">Discovery</string>
     <string name="title_favorites">Favorites</string>
+
+    <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="save_complete">Saved</string>
+    <string name="save_fail">Save failed</string>
 </resources>

@@ -14,12 +14,12 @@ import java.util.List;
 @Dao
 public interface GankNewsDao {
 
-	@Query("SELECT * FROM gankio")
-	List<GankNews> getAll();
+    @Query("SELECT * FROM gankio")
+    List<GankNews> getAll();
 
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	void insertAll(List<GankNews> gankNews);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<GankNews> gankNews);
 
-	@Query("SELECT * FROM gankio WHERE type = :type ORDER BY publishedAt DESC")
-	List<GankNews> getByType(String type);
+    @Query("SELECT * FROM gankio WHERE type = :type ORDER BY publishedAt DESC")
+    List<GankNews> getByType(String type);
 }
