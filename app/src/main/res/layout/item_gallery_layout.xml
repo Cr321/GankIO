@@ -11,7 +11,7 @@
     app:cardBackgroundColor="@android:color/black"
     app:cardElevation="4dp">
 
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/welfare_img"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
