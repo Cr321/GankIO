@@ -98,7 +98,7 @@ public class GalleryActivity extends AppCompatActivity {
                     .request();
         });
         GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository
-                .getInstance(this), Constants.TYPE_WELFARE);
+                .getInstance(getApplicationContext()), Constants.TYPE_WELFARE);
         mViewModel = ViewModelProviders.of(this, factory).get(GankNewsListViewModel.class);
         mViewModel.getGankNewsList(Constants.TYPE_WELFARE, 20, 1).observe(this, mGankNews -> {
             if (mAdapter == null) {

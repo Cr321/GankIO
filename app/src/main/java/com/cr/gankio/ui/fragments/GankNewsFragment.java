@@ -71,7 +71,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter
     private void initView(View rootView) {
         mRecyclerView = rootView.findViewById(R.id.recyclerView);
         GankNewsListViewModelFactory factory = new GankNewsListViewModelFactory(GankRepository
-                .getInstance(getActivity()), mType);
+                .getInstance(getActivity().getApplicationContext()), mType);
         mViewModel = ViewModelProviders.of(this, factory).get(GankNewsListViewModel.class);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
