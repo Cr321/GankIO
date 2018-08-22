@@ -1,7 +1,10 @@
 package com.cr.gankio.ui.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.cr.gankio.R
+import com.cr.gankio.ui.search.SearchActivity
 import com.cr.library.activity.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -27,4 +30,17 @@ class MainActivity : BaseActivity() {
         tabs.setupWithViewPager(viewpager)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item!!.itemId) {
+            R.id.action_search -> {
+                startActivityWithoutExtras(SearchActivity::class.java)
+            }
+        }
+        return true
+    }
 }

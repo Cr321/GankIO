@@ -25,14 +25,14 @@ public class GankRepository {
     private final GankNewsNetworkDataSource mGankNewsNetworkDataSource;
     private final GankIODatabase mDatabase;
     private GankNewsDao gankNewsDao;
-    private Map<String, MutableLiveData<List<GankNews>>> maps;
+    private Map<String, MutableLiveData<List<GankNews>>> GankNewsMaps;
 
     private GankRepository(Context context) {
         mDatabase = Room.databaseBuilder(context.getApplicationContext(),
                 GankIODatabase.class, "gankio").build();
         gankNewsDao = mDatabase.gankNewsDao();
-        maps = new HashMap<>();
-        mGankNewsNetworkDataSource = GankNewsNetworkDataSource.getInstance(maps);
+        GankNewsMaps = new HashMap<>();
+        mGankNewsNetworkDataSource = GankNewsNetworkDataSource.getInstance(GankNewsMaps);
     }
 
     public synchronized static GankRepository getInstance(Context context) {
@@ -48,15 +48,15 @@ public class GankRepository {
 
     public LiveData<List<GankNews>> getGanksNewsList(final String type, int num, int page) {
         final MutableLiveData<List<GankNews>> temp;
-        if (!maps.containsKey(type)) {
+        if (!GankNewsMaps.containsKey(type)) {
             temp = new MutableLiveData<>();
             Executors.newSingleThreadExecutor().execute(() -> temp.postValue(gankNewsDao
                     .getByType(type)));
             temp.observeForever(gankNews -> Executors.newSingleThreadExecutor().execute(() ->
                     gankNewsDao.insertAll(gankNews)));
-            maps.put(type, temp);
+            GankNewsMaps.put(type, temp);
         } else {
-            temp = maps.get(type);
+            temp = GankNewsMaps.get(type);
         }
         mGankNewsNetworkDataSource.getGanksNewsList(type, num, page);
         return temp;

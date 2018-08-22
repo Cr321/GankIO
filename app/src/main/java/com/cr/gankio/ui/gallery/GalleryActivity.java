@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
@@ -31,17 +30,16 @@ import com.cr.gankio.data.GankNewsListViewModel;
 import com.cr.gankio.data.GankRepository;
 import com.cr.gankio.data.database.GankNews;
 import com.cr.gankio.ui.fragments.GankNewsListViewModelFactory;
+import com.cr.library.activity.BaseActivity;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.util.List;
-
-import static com.thefinestartist.Base.getContext;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class GalleryActivity extends AppCompatActivity {
+public class GalleryActivity extends BaseActivity {
 
     public static final String IMAGE_POSITION = "image_position";
     private GankNewsListViewModel mViewModel;
