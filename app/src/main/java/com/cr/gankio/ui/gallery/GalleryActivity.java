@@ -56,12 +56,12 @@ public class GalleryActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mInstance = this;
-        touchSlop = ViewConfiguration.get(this).getScaledTouchSlop();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        super.onCreate(savedInstanceState);
+        mInstance = this;
+        touchSlop = ViewConfiguration.get(this).getScaledTouchSlop();
         setContentView(R.layout.activity_gallery);
         position = getIntent().getIntExtra(IMAGE_POSITION, 0);
         rl_black_bg = findViewById(R.id.rl_black_bg);
