@@ -6,7 +6,7 @@
 <img src="art/1.gif" width="300">
 
 ### 开发环境配置
-使用 Android Studio 3.1 打开导入 settings.gradle 文件
+使用 Android Studio 3.2 打开导入 settings.gradle 文件
 
 在项目根目录创建自己的 jks 签名库 和 keystore.properties 配置文件
 
