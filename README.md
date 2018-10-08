@@ -12,7 +12,8 @@
 
 keystore.properties 的格式如下：
 
-```storeFile=
+```
+storeFile=
 storePassword=
 keyAlias=
 keyPassword=
