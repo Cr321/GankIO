@@ -1,7 +1,7 @@
 package com.cr.gankio.data.database;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 /**
  * @author RUI CAI

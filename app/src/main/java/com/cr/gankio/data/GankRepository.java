@@ -1,8 +1,8 @@
 package com.cr.gankio.data;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.persistence.room.Room;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.room.Room;
 import android.content.Context;
 
 import com.cr.gankio.data.database.GankIODatabase;

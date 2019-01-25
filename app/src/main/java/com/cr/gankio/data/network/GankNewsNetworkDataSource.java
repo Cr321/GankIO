@@ -1,6 +1,6 @@
 package com.cr.gankio.data.network;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 
 import com.cr.gankio.data.database.GankNews;
