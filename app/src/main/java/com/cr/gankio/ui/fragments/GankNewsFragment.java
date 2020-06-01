@@ -92,7 +92,7 @@ public class GankNewsFragment extends Fragment implements GankNewsAdapter
         mSwipeRefreshLayout.setOnRefreshListener(this::refresh);
 
 
-        mViewModel.getGankNewsList(mType, 20, 1).observe(this, mGankNews -> {
+        mViewModel.getGankNewsList(mType, 20, 1).observe(getViewLifecycleOwner(), mGankNews -> {
                     if (mAdapter == null) {
                         mAdapter = new GankNewsAdapter(mInstance, mGankNews, mInstance);
                         if (Constants.TYPE_WELFARE.equals(mType)) {
